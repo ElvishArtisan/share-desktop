@@ -1,0 +1,44 @@
+Name:		share-desktop
+Version:	@VERSION@
+Release:	1%{?dist}
+Summary:	Share a desktop via VNC
+Group:		User Interface/X
+License:	GPLv2
+URL:		http://github.com/ElvishArtisan/share-desktop
+Source0:	%{name}-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-@VERSION@
+Requires:       x11vnc tigervnc-server-minimal
+
+%description
+Share-desktop is a simple little script for sharing a desktop via vnc.
+
+
+%prep
+%setup -q
+
+
+%build
+%configure
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files
+%defattr(-,root,root,-)
+/etc/X11/xinit/xinitrc.d/share-desktop.sh
+%doc COPYING
+%doc NEWS
+%doc README
+
+
+%changelog
+* Tue Oct 13 2015 Fred Gleason <fredg@paravelsystems.com>
+-- Initial packaging.
